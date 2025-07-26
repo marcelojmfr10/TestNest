@@ -142,6 +142,50 @@ describe('Pokemons (e2e)', () => {
             statusCode: 404
         });
     });
+
+    it('/pokemons/:id (PATCH) should update pokemon', async () => {
+        const pokemonId = 1;
+        const dto = {
+            name: 'prueba',
+            type: 'electric'
+        };
+
+        const pokemonResponse = await request(app.getHttpServer()).get(`/pokemons/${pokemonId}`);
+
+        const bulbasaur = pokemonResponse.body as Pokemon;
+
+        const response = await request(app.getHttpServer()).patch(`/pokemons/${pokemonId}`).send(dto);
+
+        const updatedPokemon = response.body as Pokemon;
+        // expect(bulbasaur).toEqual(updatedPokemon);
+        expect(bulbasaur.hp).toBe(updatedPokemon.hp);
+        expect(bulbasaur.id).toBe(updatedPokemon.id);
+        expect(bulbasaur.sprites).toEqual(updatedPokemon.sprites);
+        expect(dto.name).toBe(updatedPokemon.name);
+        expect(dto.type).toBe(updatedPokemon.type);
+    });
+
+    it('/pokemons/:id (PATCH) should throw an 404', async () => {
+        const pokemonId = 400_000;
+        const response = await request(app.getHttpServer()).patch(`/pokemons/${pokemonId}`).send({});
+
+        expect(response.statusCode).toBe(404);
+    });
+
+    it('/pokemons/:id (DELETE) should delete pokemon', async () => {
+        const pokemonId = 1;
+        const response = await request(app.getHttpServer()).delete(`/pokemons/${pokemonId}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.text).toBe(`Pokemon bulbasaur removed!`);
+    });
+
+    it('/pokemons/:id (DELETE) should throw an 404', async () => {
+        const pokemonId = 400_000;
+        const response = await request(app.getHttpServer()).delete(`/pokemons/${pokemonId}`);
+
+        expect(response.statusCode).toBe(404);
+    });
 });
 
 

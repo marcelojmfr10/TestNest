@@ -85,7 +85,7 @@ export class PokemonsService {
   async remove(id: number) {
     const pokemon = await this.findOne(id);
     this.pokemonsCache.delete(id);
-    return Promise.resolve(`Pokemon #${pokemon?.name} removed`);
+    return Promise.resolve(`Pokemon ${pokemon?.name} removed!`);
   }
 
   private async getPokemonInformation(id: number): Promise<Pokemon> {
