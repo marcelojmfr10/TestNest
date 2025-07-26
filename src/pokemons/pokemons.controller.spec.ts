@@ -78,13 +78,16 @@ describe('PokemonsController', () => {
   });
 
   it('should have called the service whit the correct id and data (update)', async () => {
-    const spy = jest.spyOn(service, 'update').mockImplementation(() => Promise.resolve('Pokemon updated'));
+    const spy = jest.spyOn(service, 'update').mockImplementation(() => Promise.resolve(mockPokemons[0]));
     const id = '1';
-    const dto: UpdatePokemonDto = {};
+    const dto: UpdatePokemonDto = {
+      name: 'bulbasaur 2',
+      type: 'fire'
+    };
 
     const pokemon = await controller.update(id, dto);
 
-    expect(pokemon).toBe('Pokemon updated');
+    expect(service.update).toHaveBeenCalledWith(+id, dto);
   });
 
   it('should have called delete with the correct id (delete)', async () => {
@@ -93,6 +96,19 @@ describe('PokemonsController', () => {
     const pokemon = await controller.remove(id);
 
     expect(pokemon).toBe('Pokemon deleted');
+  });
+
+  it('should call create service method', async () => {
+    const spy = jest.spyOn(service, 'create').mockImplementation(() => Promise.resolve(mockPokemons[0]));
+    const pokemon = await controller.create({
+      name: 'prueba',
+      type: 'electric',
+    });
+
+    expect(service.create).toHaveBeenCalledWith({
+      name: 'prueba',
+      type: 'electric',
+    });
   });
 
 });
