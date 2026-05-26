@@ -22,7 +22,13 @@ describe('PokemonsService', () => {
     const data = { name: 'prueba', type: 'electric' };
     const result = await service.create(data);
 
-    expect(result).toEqual({ "hp": 0, "id": expect.any(Number), "name": "prueba", "sprites": [], "type": "electric" });
+    expect(result).toEqual({
+      hp: 0,
+      id: expect.any(Number),
+      name: 'prueba',
+      sprites: [],
+      type: 'electric',
+    });
   });
 
   it('should throw an error if pokemon exists', async () => {
@@ -34,7 +40,9 @@ describe('PokemonsService', () => {
       expect(true).toBeFalsy();
     } catch (error) {
       expect(error).toBeInstanceOf(BadRequestException);
-      expect(error.message).toBe(`Pokemon with name ${data.name} already exists`);
+      expect(error.message).toBe(
+        `Pokemon with name ${data.name} already exists`,
+      );
     }
 
     // await expect(service.create(data)).rejects.toThrow(BadRequestException);
@@ -51,8 +59,8 @@ describe('PokemonsService', () => {
       hp: 39,
       sprites: [
         'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/4.png'
-      ]
+        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/4.png',
+      ],
     });
   });
 
@@ -60,10 +68,12 @@ describe('PokemonsService', () => {
     const id = 400000;
 
     await expect(service.findOne(id)).rejects.toThrow(NotFoundException);
-    await expect(service.findOne(id)).rejects.toThrow(`Pokemon with id ${id} not found`);
+    await expect(service.findOne(id)).rejects.toThrow(
+      `Pokemon with id ${id} not found`,
+    );
   });
 
-  it("should return a pokemon from cache", async () => {
+  it('should return a pokemon from cache', async () => {
     const cacheSpy = jest.spyOn(service.pokemonsCache, 'get');
     const id = 1;
 
@@ -83,8 +93,8 @@ describe('PokemonsService', () => {
       expect.objectContaining({
         id: id,
         hp: expect.any(Number),
-      })
-    )
+      }),
+    );
   });
 
   it('should find all pokemons and cache them', async () => {
@@ -122,10 +132,9 @@ describe('PokemonsService', () => {
       hp: 45,
       sprites: [
         'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png'
-      ]
-    })
-
+        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png',
+      ],
+    });
   });
 
   it('should not update pokemon if not exists', async () => {
@@ -135,7 +144,7 @@ describe('PokemonsService', () => {
     // const updatedPokemon = await service.update(id, dto);
 
     try {
-      await service.update(id,dto);
+      await service.update(id, dto);
       expect(true).toBeFalsy();
     } catch (error) {
       expect(error).toBeInstanceOf(NotFoundException);
@@ -152,6 +161,4 @@ describe('PokemonsService', () => {
     await service.remove(id);
     expect(service.pokemonsCache.get(id)).toBeUndefined();
   });
-
-
 });

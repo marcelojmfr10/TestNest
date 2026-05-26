@@ -7,25 +7,25 @@ import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 
 const mockPokemons: Pokemon[] = [
   {
-    "id": 1,
-    "name": "bulbasaur",
-    "type": "grass",
-    "hp": 45,
-    "sprites": [
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png"
-    ]
+    id: 1,
+    name: 'bulbasaur',
+    type: 'grass',
+    hp: 45,
+    sprites: [
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png',
+    ],
   },
   {
-    "id": 2,
-    "name": "ivysaur",
-    "type": "grass",
-    "hp": 60,
-    "sprites": [
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/2.png"
-    ]
-  }
+    id: 2,
+    name: 'ivysaur',
+    type: 'grass',
+    hp: 60,
+    sprites: [
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/2.png',
+    ],
+  },
 ];
 
 describe('PokemonsController', () => {
@@ -59,7 +59,9 @@ describe('PokemonsController', () => {
   it('should have called the service and check the result', async () => {
     const dto: PaginationDto = { limit: 10, page: 1 };
 
-    jest.spyOn(service, 'findAll').mockImplementation(() => Promise.resolve(mockPokemons));
+    jest
+      .spyOn(service, 'findAll')
+      .mockImplementation(() => Promise.resolve(mockPokemons));
 
     const pokemons = await controller.findAll(dto);
     expect(pokemons).toBe(mockPokemons);
@@ -67,7 +69,9 @@ describe('PokemonsController', () => {
   });
 
   it('should have called the service with the correct id (findOne)', async () => {
-    const spy = jest.spyOn(service, 'findOne').mockImplementation(() => Promise.resolve(mockPokemons[0]));
+    const spy = jest
+      .spyOn(service, 'findOne')
+      .mockImplementation(() => Promise.resolve(mockPokemons[0]));
     const id = '1';
 
     const pokemon = await controller.findOne(id);
@@ -78,11 +82,13 @@ describe('PokemonsController', () => {
   });
 
   it('should have called the service whit the correct id and data (update)', async () => {
-    const spy = jest.spyOn(service, 'update').mockImplementation(() => Promise.resolve(mockPokemons[0]));
+    const spy = jest
+      .spyOn(service, 'update')
+      .mockImplementation(() => Promise.resolve(mockPokemons[0]));
     const id = '1';
     const dto: UpdatePokemonDto = {
       name: 'bulbasaur 2',
-      type: 'fire'
+      type: 'fire',
     };
 
     const pokemon = await controller.update(id, dto);
@@ -91,7 +97,9 @@ describe('PokemonsController', () => {
   });
 
   it('should have called delete with the correct id (delete)', async () => {
-    const spy = jest.spyOn(service, 'remove').mockImplementation(() => Promise.resolve('Pokemon deleted'));
+    const spy = jest
+      .spyOn(service, 'remove')
+      .mockImplementation(() => Promise.resolve('Pokemon deleted'));
     const id = '1';
     const pokemon = await controller.remove(id);
 
@@ -99,7 +107,9 @@ describe('PokemonsController', () => {
   });
 
   it('should call create service method', async () => {
-    const spy = jest.spyOn(service, 'create').mockImplementation(() => Promise.resolve(mockPokemons[0]));
+    const spy = jest
+      .spyOn(service, 'create')
+      .mockImplementation(() => Promise.resolve(mockPokemons[0]));
     const pokemon = await controller.create({
       name: 'prueba',
       type: 'electric',
@@ -110,5 +120,4 @@ describe('PokemonsController', () => {
       type: 'electric',
     });
   });
-
 });
